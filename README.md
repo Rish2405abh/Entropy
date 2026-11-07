@@ -1,26 +1,25 @@
-# 🌍 VR Teleport - Stand Anywhere in the World
+# 🌐 Entropy - Global VR & 3D Location Teleport
 
-An immersive WebXR Virtual Reality application that transports you to iconic landmarks across Earth (and Mars!) or lets you step inside your own uploaded 360° panoramas.
+Step into any place on Earth (or Mars!) in immersive 360° Virtual Reality. 
 
-Built with **A-Frame** (WebXR) and standard web technologies. Works right in the browser on desktop, mobile, and VR headsets (Meta Quest, Apple Vision Pro, Cardboard).
+**Entropy** lets you enter **any location name** (e.g. *Taj Mahal, Eiffel Tower, Mount Everest, Paris*) or **exact GPS coordinates** (e.g. `27.1750, 78.0421`) to teleport to that place and look around in full 360° VR. You can also upload any custom 360° panoramic photograph to step directly inside it.
+
+Built using **A-Frame (WebXR)**, OpenStreetMap Geocoding, and Wikimedia Commons 360 Equirectangular imagery.
 
 ---
 
 ## ✨ Features
 
-- **🏛️ Instant Landmark Teleportation:** Explore high-resolution 360° panoramas of:
-  - 🕌 Taj Mahal (Agra, India)
-  - 🗼 Eiffel Tower (Paris, France)
-  - 🏛️ Colosseum (Rome, Italy)
-  - 🏜️ Pyramids of Giza (Egypt)
-  - ⛩️ Shibuya Crossing (Tokyo, Japan)
-  - 🪐 Perseverance Rover Surface View (Mars)
-- **📸 Custom 360° Photo Upload:** Upload any equirectangular 360° photo (from a 360 camera, Google Street View export, or phone panorama app) and step right into it.
-- **🥽 Multi-Device VR Support:**
-  - **Desktop:** Click and drag with mouse to look around in 360°.
-  - **Mobile:** Gyroscope motion tracking (move your phone to look).
-  - **VR Headsets:** Full immersive head-tracking via WebXR.
-- **⚡ Zero Installation:** Runs 100% in the browser with no backend required.
+- **🔍 Location Search:** Type any city, country, or landmark name to search and teleport.
+- **📍 GPS Coordinate Teleportation:** Enter exact coordinates (e.g. `48.8584, 2.2945`) with automatic reverse geocoding and panoramic lookup.
+- **🥽 Full WebXR Virtual Reality:**
+  - **Desktop:** Click & drag with your mouse.
+  - **Mobile:** Gyroscopic head-tracking (moves as you move your phone).
+  - **VR Headsets:** Meta Quest, Apple Vision Pro, Google Cardboard (tap the VR icon in the bottom-right).
+- **📸 Custom 360° Photo Upload:** Load any equirectangular panoramic image to stand right there in VR.
+- **🏛️ Instant Wonder Shortcuts:** One-click presets for the Taj Mahal, Eiffel Tower, Colosseum, Pyramids of Giza, Mount Everest, Tokyo Shibuya, and Mars Perseverance Rover.
+- **🎲 Surprise Me Mode:** Teleport to a random wonder of the world.
+- **🌍 External 3D Integration:** One-click shortcuts to open the exact coordinates in Google Street View and Google Earth 3D.
 
 ---
 
@@ -28,35 +27,32 @@ Built with **A-Frame** (WebXR) and standard web technologies. Works right in the
 
 1. Clone this repository:
    ```bash
-   git clone git@github.com:Rish2405abh/Entropy.html.git
-   cd Entropy.html
+   git clone git@github.com:Rish2405abh/Entropy.git
+   cd Entropy
    ```
 
-2. Open `index.html` in any modern web browser, or serve it locally:
+2. Open `index.html` directly in your web browser, or launch a local server:
    ```bash
    # Using Python:
    python -m http.server 8000
    ```
-   Then visit `http://localhost:8000`.
+   Then open `http://localhost:8000` in your browser.
 
 ---
 
-## 🌐 Live Demo (GitHub Pages)
+## 🌐 Live Web Demo
 
-You can enable GitHub Pages to view this project live:
-1. Go to **Settings** > **Pages** in this repository.
-2. Under **Branch**, select `main` and `/ (root)`.
-3. Click **Save**.
-4. Your live app will be accessible at:
-   `https://rish2405abh.github.io/Entropy.html/`
+Once GitHub Pages is enabled in your repository settings:
+- **Live URL:** `https://rish2405abh.github.io/Entropy/`
 
 ---
 
-## 🛠️ Built With
+## 🛠️ Tech Stack
 
-- [A-Frame](https://aframe.io/) - WebXR framework for 3D/VR experiences
-- HTML5 / CSS3 / JavaScript
-- Equirectangular 360° imagery courtesy of Wikimedia Commons & NASA
+- **A-Frame (WebXR):** 3D WebXR rendering engine
+- **OpenStreetMap Nominatim:** Forward & reverse geocoding
+- **Wikimedia Commons API:** Equirectangular 360° photography
+- **HTML5 / Modern Vanilla JS / CSS Glassmorphism**
 
 ---
 
