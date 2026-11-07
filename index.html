@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>VR Teleport - Stand Anywhere in the World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Experience world-famous landmarks and custom locations in immersive 360-degree Virtual Reality.">
+
+  <!-- A-Frame WebXR Framework -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+
+    /* Floating UI Panel */
+    #ui-panel {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 99999;
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 20px;
+      border-radius: 16px;
+      color: #f8fafc;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 320px;
+      max-width: calc(100vw - 40px);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    #ui-panel.minimized {
+      transform: translateY(-80%);
+      opacity: 0.2;
+    }
+
+    #ui-panel.minimized:hover {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: #2563eb;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    p.subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    /* Grid of Famous Places */
+    .places-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .place-btn {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 8px;
+      color: #f1f5f9;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .place-btn span.emoji {
+      font-size: 20px;
+    }
+
+    .place-btn:hover {
+      background: #3b82f6;
+      border-color: #60a5fa;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    .place-btn.active {
+      background: #2563eb;
+      border-color: #93c5fd;
+    }
+
+    /* Upload Area */
+    .upload-container {
+      margin-bottom: 14px;
+    }
+
+    .upload-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+
+    .upload-label:hover {
+      background: linear-gradient(135deg, #4338ca, #6d28d9);
+      transform: translateY(-1px);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* Location Status & Instructions */
+    .status-bar {
+      font-size: 11px;
+      color: #38bdf8;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 6px 10px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .instructions {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.4;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 10px;
+    }
+
+    .instructions span {
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating UI Overlay -->
+  <div id="ui-panel">
+    <span class="badge">WebXR 360°</span>
+    <h1>🌍 VR Teleport</h1>
+    <p class="subtitle">Experience famous landmarks or upload any 360° photo to stand right there in VR.</p>
+
+    <div class="status-bar" id="current-location">
+      📍 Location: <strong>Taj Mahal, India</strong>
+    </div>
+
+    <div class="section-title">Famous Locations</div>
+    <div class="places-grid">
+      <button class="place-btn active" onclick="teleport('taj', 'Taj Mahal, India', this)">
+        <span class="emoji">🕌</span>
+        <span>Taj Mahal</span>
+      </button>
+      <button class="place-btn" onclick="teleport('eiffel', 'Eiffel Tower, Paris', this)">
+        <span class="emoji">🗼</span>
+        <span>Eiffel Tower</span>
+      </button>
+      <button class="place-btn" onclick="teleport('colosseum', 'Colosseum, Rome', this)">
+        <span class="emoji">🏛️</span>
+        <span>Colosseum</span>
+      </button>
+      <button class="place-btn" onclick="teleport('pyramids', 'Giza Pyramids, Egypt', this)">
+        <span class="emoji">🏜️</span>
+        <span>Pyramids</span>
+      </button>
+      <button class="place-btn" onclick="teleport('tokyo', 'Shibuya, Tokyo', this)">
+        <span class="emoji">⛩️</span>
+        <span>Tokyo</span>
+      </button>
+      <button class="place-btn" onclick="teleport('mars', 'Perseverance Rover, Mars', this)">
+        <span class="emoji">🪐</span>
+        <span>Mars Surface</span>
+      </button>
+    </div>
+
+    <div class="section-title">Custom 360° Upload</div>
+    <div class="upload-container">
+      <label class="upload-label">
+        <input type="file" id="file-input" accept="image/*" onchange="handleCustomUpload(event)">
+        📸 Upload Your 360° Photo
+      </label>
+    </div>
+
+    <div class="instructions">
+      💡 <span>Controls:</span> Click & drag to look around. On mobile/VR headset, tap the <strong>VR icon</strong> (bottom-right) for head-tracking!
+    </div>
+  </div>
+
+  <!-- A-Frame Virtual Reality Scene -->
+  <a-scene embedded style="height: 100vh; width: 100vw;">
+    <!-- 360 Sky (Equirectangular projection) -->
+    <a-sky id="sky" src="https://upload.wikimedia.org/wikipedia/commons/6/60/Taj_Mahal_360_Panorama.jpg" rotation="0 -90 0"></a-sky>
+
+    <!-- Camera rig with mouse/touch look controls -->
+    <a-entity id="rig" position="0 1.6 0">
+      <a-camera id="camera" look-controls="pointerLockEnabled: false" wasd-controls="enabled: false"></a-camera>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    // High-resolution equirectangular 360° panoramas from Wikimedia Commons / NASA
+    const landmarks = {
+      taj: "https://upload.wikimedia.org/wikipedia/commons/6/60/Taj_Mahal_360_Panorama.jpg",
+      eiffel: "https://upload.wikimedia.org/wikipedia/commons/1/18/Eiffel_Tower_from_below_360_panorama.jpg",
+      colosseum: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Colosseum_360_panorama.jpg",
+      pyramids: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Pyramids_of_Giza_360.jpg",
+      tokyo: "https://upload.wikimedia.org/wikipedia/commons/8/82/Shibuya_Crossing_360.jpg",
+      mars: "https://upload.wikimedia.org/wikipedia/commons/d/d8/NASA_Perseverance_Mars_Rover_360_Panorama.jpg"
+    };
+
+    function teleport(landmarkKey, label, buttonElement) {
+      const sky = document.getElementById('sky');
+      const status = document.getElementById('current-location');
+      
+      if (landmarks[landmarkKey]) {
+        sky.setAttribute('src', landmarks[landmarkKey]);
+        status.innerHTML = `📍 Location: <strong>${label}</strong>`;
+        
+        // Highlight active button
+        document.querySelectorAll('.place-btn').forEach(btn => btn.classList.remove('active'));
+        if (buttonElement) buttonElement.classList.add('active');
+      }
+    }
+
+    function handleCustomUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const sky = document.getElementById('sky');
+          const status = document.getElementById('current-location');
+          sky.setAttribute('src', e.target.result);
+          status.innerHTML = `📍 Custom Location: <strong>${file.name}</strong>`;
+          document.querySelectorAll('.place-btn').forEach(btn => btn.classList.remove('active'));
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+</body>
+</html>
