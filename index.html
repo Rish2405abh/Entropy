@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Entropy VR - Global 360° Teleport & Spatial Explorer</title>
+  <title>Entropy VR - Top 10 World Wonders 360° Spatial Explorer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Explore 50+ world-famous destinations, landmarks, and GPS coordinates in immersive WebXR Virtual Reality.">
+  <meta name="description" content="Explore the top 10 most famous destinations on Earth and Mars in crystal-clear high-definition 360° Virtual Reality.">
 
   <!-- A-Frame WebXR 3D VR Engine -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
@@ -12,10 +12,10 @@
   <style>
     :root {
       --primary: #38bdf8;
-      --primary-glow: rgba(56, 189, 248, 0.35);
+      --primary-glow: rgba(56, 189, 248, 0.4);
       --accent: #818cf8;
       --bg-panel: rgba(15, 23, 42, 0.88);
-      --border-panel: rgba(255, 255, 255, 0.12);
+      --border-panel: rgba(255, 255, 255, 0.14);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
@@ -36,7 +36,7 @@
       user-select: none;
     }
 
-    /* Cinematic Teleport Fade Transition Overlay */
+    /* Cinematic Teleport Fade Transition */
     #teleport-transition {
       position: fixed;
       top: 0;
@@ -53,13 +53,13 @@
       opacity: 1;
     }
 
-    /* Spatial Floating HUD Panel */
+    /* Spatial HUD Control Window */
     #hud {
       position: absolute;
       top: 16px;
       left: 16px;
       z-index: 9999;
-      width: 440px;
+      width: 420px;
       max-width: calc(100vw - 32px);
       max-height: calc(100vh - 32px);
       background: var(--bg-panel);
@@ -68,7 +68,7 @@
       border: 1px solid var(--border-panel);
       border-radius: 20px;
       padding: 18px 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(56, 189, 248, 0.15);
       display: flex;
       flex-direction: column;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -80,7 +80,6 @@
       padding: 10px 14px;
     }
 
-    /* Top HUD Bar */
     .hud-header {
       display: flex;
       align-items: center;
@@ -146,7 +145,6 @@
       background: rgba(56, 189, 248, 0.15);
     }
 
-    /* Live Compass Indicator */
     #compass-badge {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 11px;
@@ -158,7 +156,6 @@
       border-radius: 6px;
     }
 
-    /* Scrollable Inner HUD Content */
     .hud-body {
       overflow-y: auto;
       max-height: calc(100vh - 120px);
@@ -172,88 +169,10 @@
       border-radius: 4px;
     }
 
-    /* Search Bar with Autocomplete */
-    .search-section {
-      position: relative;
-      margin-bottom: 12px;
-    }
-
-    .search-bar {
-      display: flex;
-      background: rgba(30, 41, 59, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.2s;
-    }
-    .search-bar:focus-within {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
-    }
-
-    #location-search-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: #fff;
-      outline: none;
-    }
-    #location-search-input::placeholder {
-      color: #64748b;
-      font-size: 12px;
-    }
-
-    .search-submit-btn {
-      background: linear-gradient(135deg, #0284c7, #2563eb);
-      border: none;
-      color: white;
-      padding: 0 16px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: opacity 0.2s;
-    }
-    .search-submit-btn:hover { opacity: 0.9; }
-
-    /* Live Search Results Dropdown */
-    #search-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
-      background: rgba(15, 23, 42, 0.98);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 12px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
-      max-height: 220px;
-      overflow-y: auto;
-      z-index: 10000;
-    }
-    .search-item {
-      padding: 8px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: background 0.15s;
-    }
-    .search-item:hover {
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--primary);
-    }
-
-    /* Current Location Showcase Card */
+    /* Current Location Feature Card */
     #current-place-card {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85));
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 14px;
       padding: 14px;
       margin-bottom: 14px;
@@ -276,15 +195,16 @@
       gap: 6px;
     }
 
-    .category-badge {
+    .resolution-badge {
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--primary);
-      padding: 2px 7px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      padding: 3px 8px;
       border-radius: 20px;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
       white-space: nowrap;
     }
 
@@ -327,121 +247,74 @@
       transform: translateY(-1px);
     }
 
-    /* Category Filter Pills */
-    .filter-tabs-wrapper {
-      margin-bottom: 10px;
-    }
-    .filter-title {
-      font-size: 10px;
+    /* Section Label */
+    .section-label {
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.08em;
       color: #64748b;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-weight: 700;
       display: flex;
       justify-content: space-between;
     }
-    .filter-tabs {
-      display: flex;
-      gap: 5px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-    .filter-tabs::-webkit-scrollbar {
-      height: 3px;
-    }
-    .filter-tabs::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
-    }
-    .tab-btn {
-      background: rgba(30, 41, 59, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #94a3b8;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 4px 10px;
-      border-radius: 20px;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
-    }
-    .tab-btn.active {
-      background: var(--primary);
-      color: #041226;
-      font-weight: 700;
-      border-color: var(--primary);
-    }
 
-    /* 50+ Destinations Grid */
+    /* Top 10 Destinations Grid */
     .places-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
+      gap: 8px;
       margin-bottom: 14px;
-      max-height: 240px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-    .places-grid::-webkit-scrollbar {
-      width: 4px;
-    }
-    .places-grid::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 4px;
     }
 
     .grid-place-card {
       background: rgba(30, 41, 59, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      padding: 10px 12px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
+      gap: 10px;
+      transition: all 0.2s ease;
       text-align: left;
     }
     .grid-place-card:hover {
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(56, 189, 248, 0.18);
       border-color: var(--primary);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(56, 189, 248, 0.2);
     }
     .grid-place-card.active {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.8), rgba(37, 99, 235, 0.8));
-      border-color: #60a5fa;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.85), rgba(37, 99, 235, 0.85));
+      border-color: #93c5fd;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
     }
 
     .place-emoji {
-      font-size: 18px;
+      font-size: 22px;
       flex-shrink: 0;
     }
     .place-info-text {
       overflow: hidden;
     }
     .place-card-name {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       color: #f1f5f9;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .place-card-sub {
-      font-size: 10px;
+      font-size: 11px;
       color: #94a3b8;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* Actions Row */
+    /* Action Row: Custom Upload & Surprise Me */
     .action-row {
       display: flex;
       gap: 8px;
@@ -500,7 +373,7 @@
       align-items: center;
     }
 
-    /* Ambient Audio Visualizer Wave */
+    /* Audio Pulse Wave */
     .sound-pulse {
       display: inline-block;
       width: 6px;
@@ -523,7 +396,7 @@
       left: 50%;
       transform: translateX(-50%);
       z-index: 100000;
-      background: rgba(15, 23, 42, 0.94);
+      background: rgba(15, 23, 42, 0.95);
       border: 1px solid rgba(56, 189, 248, 0.4);
       backdrop-filter: blur(16px);
       padding: 10px 20px;
@@ -532,11 +405,6 @@
       font-weight: 600;
       color: #f1f5f9;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-      animation: fadeIn 0.25s ease-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, 10px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
     }
   </style>
 </head>
@@ -569,31 +437,13 @@
 
     <!-- HUD Body -->
     <div class="hud-body" id="hud-content">
-      <!-- Search Input -->
-      <div class="search-section">
-        <div class="search-bar">
-          <input 
-            type="text" 
-            id="location-search-input" 
-            placeholder="Search 55 places, or type coordinates (e.g. 27.175, 78.042)..." 
-            oninput="handleSearchInput(this.value)"
-            onkeydown="if(event.key === 'Enter') executeSearch()"
-          />
-          <button class="search-submit-btn" onclick="executeSearch()">
-            <span>Go</span> 🚀
-          </button>
-        </div>
-        <!-- Live Autocomplete Dropdown -->
-        <div id="search-dropdown"></div>
-      </div>
-
       <!-- Current Location Detail Card -->
       <div id="current-place-card">
         <div class="card-top">
           <div class="place-main-title" id="disp-title">
             <span>🕌</span> Taj Mahal, India
           </div>
-          <span class="category-badge" id="disp-category">Wonders</span>
+          <span class="resolution-badge" id="disp-res">Ultra HD 4K</span>
         </div>
         <div class="place-coords" id="disp-coords">
           Lat: 27.1750° N, Lon: 78.0421° E
@@ -614,32 +464,18 @@
         </div>
       </div>
 
-      <!-- Category Filter Tabs -->
-      <div class="filter-tabs-wrapper">
-        <div class="filter-title">
-          <span>Global Destinations (55 Places)</span>
-          <span id="place-count-indicator">55 Available</span>
-        </div>
-        <div class="filter-tabs">
-          <button class="tab-btn active" onclick="filterCategory('all', this)">All (55)</button>
-          <button class="tab-btn" onclick="filterCategory('wonders', this)">🏛️ Wonders</button>
-          <button class="tab-btn" onclick="filterCategory('landmarks', this)">🗼 Landmarks</button>
-          <button class="tab-btn" onclick="filterCategory('cities', this)">🏙️ Cities</button>
-          <button class="tab-btn" onclick="filterCategory('nature', this)">🏔️ Nature</button>
-          <button class="tab-btn" onclick="filterCategory('beaches', this)">🏖️ Beaches</button>
-          <button class="tab-btn" onclick="filterCategory('temples', this)">⛩️ Sacred</button>
-          <button class="tab-btn" onclick="filterCategory('cosmic', this)">🪐 Space & Sci-Fi</button>
-        </div>
+      <!-- Top 10 Places Grid -->
+      <div class="section-label">
+        <span>Top 10 World Destinations</span>
+        <span>High-Definition 360°</span>
       </div>
-
-      <!-- Destinations Grid -->
       <div class="places-grid" id="places-grid"></div>
 
       <!-- Action Row: Custom Upload & Surprise Me -->
       <div class="action-row">
-        <label class="file-upload-box" title="Upload 360 photo, or text file with coordinates">
+        <label class="file-upload-box" title="Upload any 360 photo, or text file with coordinates">
           <input type="file" id="file-input" accept="image/*,.txt,.csv,.json,.gpx" onchange="handleFileUpload(event)">
-          📂 <span>Upload 360° / Coordinates File</span>
+          📂 <span>Upload Custom 360° Photo</span>
         </label>
         <button class="surprise-btn" onclick="teleportRandom()">🎲 Surprise Me</button>
       </div>
@@ -670,686 +506,133 @@
 
   <script>
     // =========================================================================
-    // 1. 55 ICONIC WORLD DESTINATIONS DATABASE
+    // 1. TOP 10 WORLD WONDERS DATABASE (ALL 100% HIGH QUALITY LOCAL TEXTURES)
     // =========================================================================
-    const PLACES = [
-      // --- WONDERS OF THE WORLD (8) ---
+    const TOP_10_PLACES = [
       {
         id: "taj-mahal",
         name: "Taj Mahal",
-        country: "India",
+        country: "Agra, India",
         emoji: "🕌",
-        category: "wonders",
+        resolution: "Ultra HD 360°",
         lat: 27.1750,
         lon: 78.0421,
         texture: "assets/taj.jpg",
-        desc: "Magnificent ivory-white marble mausoleum on the south bank of the Yamuna river, commissioned in 1632.",
+        desc: "Magnificent ivory-white marble mausoleum on the south bank of the Yamuna river, recognized as the jewel of Mughal architecture.",
         wiki: "https://en.wikipedia.org/wiki/Taj_Mahal"
       },
       {
-        id: "giza-pyramids",
+        id: "eiffel-tower",
+        name: "Eiffel Tower",
+        country: "Paris, France",
+        emoji: "🗼",
+        resolution: "Ultra HD 360°",
+        lat: 48.8584,
+        lon: 2.2945,
+        texture: "assets/eiffel.jpg",
+        desc: "The world's most recognized wrought-iron lattice tower rising 330 meters above the Champ de Mars along the Seine River.",
+        wiki: "https://en.wikipedia.org/wiki/Eiffel_Tower"
+      },
+      {
+        id: "pyramids-giza",
         name: "Great Pyramids of Giza",
-        country: "Egypt",
+        country: "Cairo, Egypt",
         emoji: "🏜️",
-        category: "wonders",
+        resolution: "4K Panoramic 360°",
         lat: 29.9792,
         lon: 31.1342,
-        texture: "assets/nature.jpg",
-        desc: "The oldest of the Seven Wonders of the Ancient World, standing tall in the desert sands for over 4,500 years.",
+        texture: "assets/pyramids.jpg",
+        desc: "The ancient marvel of human engineering and the only remaining wonder of the ancient world, standing tall in the Sahara sands for over 4,500 years.",
         wiki: "https://en.wikipedia.org/wiki/Giza_pyramid_complex"
       },
       {
         id: "colosseum",
         name: "The Colosseum",
-        country: "Italy",
+        country: "Rome, Italy",
         emoji: "🏛️",
-        category: "wonders",
+        resolution: "4K Panoramic 360°",
         lat: 41.8902,
         lon: 12.4922,
-        texture: "assets/palace.jpg",
-        desc: "The largest ancient amphitheatre ever built, constructed in 70-80 AD under Emperor Vespasian.",
+        texture: "assets/colosseum.jpg",
+        desc: "The monumental amphitheatre built of travertine limestone, tuff, and brick-faced concrete under Emperor Vespasian in 70 AD.",
         wiki: "https://en.wikipedia.org/wiki/Colosseum"
-      },
-      {
-        id: "great-wall",
-        name: "Great Wall of China",
-        country: "China",
-        emoji: "🧱",
-        category: "wonders",
-        lat: 40.4319,
-        lon: 116.5704,
-        texture: "assets/nature.jpg",
-        desc: "Ancient series of fortifications stretching over 13,000 miles across northern historical borders.",
-        wiki: "https://en.wikipedia.org/wiki/Great_Wall_of_China"
-      },
-      {
-        id: "machu-picchu",
-        name: "Machu Picchu",
-        country: "Peru",
-        emoji: "⛰️",
-        category: "wonders",
-        lat: -13.1631,
-        lon: -72.5450,
-        texture: "assets/nature.jpg",
-        desc: "15th-century Inca citadel situated on a mountain ridge 2,430 meters above sea level.",
-        wiki: "https://en.wikipedia.org/wiki/Machu_Picchu"
-      },
-      {
-        id: "petra",
-        name: "Petra Ancient City",
-        country: "Jordan",
-        emoji: "🏺",
-        category: "wonders",
-        lat: 30.3285,
-        lon: 35.4444,
-        texture: "assets/nature.jpg",
-        desc: "Famous archaeological rose-red city carved directly into vibrant pink sandstone cliff faces.",
-        wiki: "https://en.wikipedia.org/wiki/Petra"
-      },
-      {
-        id: "christ-redeemer",
-        name: "Christ the Redeemer",
-        country: "Brazil",
-        emoji: "🗿",
-        category: "wonders",
-        lat: -22.9519,
-        lon: -43.2105,
-        texture: "assets/city.jpg",
-        desc: "Art Deco statue of Jesus Christ overlooking Rio de Janeiro from the 700-meter peak of Corcovado.",
-        wiki: "https://en.wikipedia.org/wiki/Christ_the_Redeemer_(statue)"
-      },
-      {
-        id: "chichen-itza",
-        name: "Chichen Itza",
-        country: "Mexico",
-        emoji: "🪙",
-        category: "wonders",
-        lat: 20.6843,
-        lon: -88.5678,
-        texture: "assets/nature.jpg",
-        desc: "Towering Mayan step-pyramid temple of Kukulkan in the Yucatán Peninsula.",
-        wiki: "https://en.wikipedia.org/wiki/Chichen_Itza"
-      },
-
-      // --- ICONIC LANDMARKS (10) ---
-      {
-        id: "eiffel-tower",
-        name: "Eiffel Tower",
-        country: "France",
-        emoji: "🗼",
-        category: "landmarks",
-        lat: 48.8584,
-        lon: 2.2945,
-        texture: "assets/eiffel.jpg",
-        desc: "Wrought-iron lattice tower on the Champ de Mars, engineered for the 1889 World's Fair.",
-        wiki: "https://en.wikipedia.org/wiki/Eiffel_Tower"
-      },
-      {
-        id: "statue-liberty",
-        name: "Statue of Liberty",
-        country: "USA",
-        emoji: "🗽",
-        category: "landmarks",
-        lat: 40.6892,
-        lon: -74.0445,
-        texture: "assets/beach.jpg",
-        desc: "Colossal neoclassical sculpture on Liberty Island in New York Harbor, gifted by France.",
-        wiki: "https://en.wikipedia.org/wiki/Statue_of_Liberty"
-      },
-      {
-        id: "big-ben",
-        name: "Big Ben & Westminster",
-        country: "UK",
-        emoji: "🕰️",
-        category: "landmarks",
-        lat: 51.5007,
-        lon: -0.1246,
-        texture: "assets/city.jpg",
-        desc: "The Great Bell of the clock tower at the north end of the Houses of Parliament in London.",
-        wiki: "https://en.wikipedia.org/wiki/Big_Ben"
-      },
-      {
-        id: "sydney-opera",
-        name: "Sydney Opera House",
-        country: "Australia",
-        emoji: "🎭",
-        category: "landmarks",
-        lat: -33.8568,
-        lon: 151.2153,
-        texture: "assets/beach.jpg",
-        desc: "Multi-venue performing arts centre with its world-famous sail-shaped roofs on Sydney Harbour.",
-        wiki: "https://en.wikipedia.org/wiki/Sydney_Opera_House"
-      },
-      {
-        id: "burj-khalifa",
-        name: "Burj Khalifa",
-        country: "UAE",
-        emoji: "🏙️",
-        category: "landmarks",
-        lat: 25.1972,
-        lon: 55.2744,
-        texture: "assets/city.jpg",
-        desc: "The tallest skyscraper and man-made structure in the world, piercing the clouds at 828 meters.",
-        wiki: "https://en.wikipedia.org/wiki/Burj_Khalifa"
-      },
-      {
-        id: "sagrada-familia",
-        name: "Sagrada Família",
-        country: "Spain",
-        emoji: "⛪",
-        category: "landmarks",
-        lat: 41.4036,
-        lon: 2.1744,
-        texture: "assets/palace.jpg",
-        desc: "Antoni Gaudí's masterwork basilica in Barcelona, under continuous construction since 1882.",
-        wiki: "https://en.wikipedia.org/wiki/Sagrada_Fam%C3%ADlia"
-      },
-      {
-        id: "st-basils",
-        name: "Saint Basil's Cathedral",
-        country: "Russia",
-        emoji: "🎪",
-        category: "landmarks",
-        lat: 55.7525,
-        lon: 37.6231,
-        texture: "assets/palace.jpg",
-        desc: "Iconic multicolored onion-domed cathedral standing proudly in Moscow's Red Square.",
-        wiki: "https://en.wikipedia.org/wiki/Saint_Basil%27s_Cathedral"
-      },
-      {
-        id: "golden-gate",
-        name: "Golden Gate Bridge",
-        country: "USA",
-        emoji: "🌉",
-        category: "landmarks",
-        lat: 37.8199,
-        lon: -122.4783,
-        texture: "assets/beach.jpg",
-        desc: "Famous international orange suspension bridge connecting San Francisco to Marin County.",
-        wiki: "https://en.wikipedia.org/wiki/Golden_Gate_Bridge"
-      },
-      {
-        id: "acropolis",
-        name: "Acropolis of Athens",
-        country: "Greece",
-        emoji: "🏛️",
-        category: "landmarks",
-        lat: 37.9715,
-        lon: 23.7257,
-        texture: "assets/nature.jpg",
-        desc: "Ancient citadel containing the ruins of the Parthenon overlooking the Greek capital.",
-        wiki: "https://en.wikipedia.org/wiki/Acropolis_of_Athens"
-      },
-      {
-        id: "palace-versailles",
-        name: "Palace of Versailles",
-        country: "France",
-        emoji: "🏰",
-        category: "landmarks",
-        lat: 48.8049,
-        lon: 2.1204,
-        texture: "assets/palace.jpg",
-        desc: "Principal royal residence of France under Louis XIV, renowned for the Hall of Mirrors.",
-        wiki: "https://en.wikipedia.org/wiki/Palace_of_Versailles"
-      },
-
-      // --- GLOBAL METROPOLISES (8) ---
-      {
-        id: "shibuya-tokyo",
-        name: "Shibuya Crossing",
-        country: "Japan",
-        emoji: "⛩️",
-        category: "cities",
-        lat: 35.6595,
-        lon: 139.7005,
-        texture: "assets/city.jpg",
-        desc: "The world's busiest pedestrian scramble crossing, illuminated by massive neon video screens.",
-        wiki: "https://en.wikipedia.org/wiki/Shibuya_Crossing"
-      },
-      {
-        id: "times-square",
-        name: "Times Square, NYC",
-        country: "USA",
-        emoji: "✨",
-        category: "cities",
-        lat: 40.7580,
-        lon: -73.9855,
-        texture: "assets/city.jpg",
-        desc: "The vibrant crossroads of the world and commercial heart of Midtown Manhattan.",
-        wiki: "https://en.wikipedia.org/wiki/Times_Square"
-      },
-      {
-        id: "marina-bay",
-        name: "Marina Bay Sands",
-        country: "Singapore",
-        emoji: "🏙️",
-        category: "cities",
-        lat: 1.2838,
-        lon: 103.8591,
-        texture: "assets/city.jpg",
-        desc: "Futuristic integrated resort fronting Marina Bay with its cantilevered SkyPark infinity pool.",
-        wiki: "https://en.wikipedia.org/wiki/Marina_Bay_Sands"
-      },
-      {
-        id: "victoria-harbour",
-        name: "Victoria Harbour & Peak",
-        country: "Hong Kong",
-        emoji: "🌆",
-        category: "cities",
-        lat: 22.2759,
-        lon: 114.1455,
-        texture: "assets/city.jpg",
-        desc: "Densely packed skyscraper skyline between Hong Kong Island and Kowloon Peninsula.",
-        wiki: "https://en.wikipedia.org/wiki/Victoria_Harbour"
-      },
-      {
-        id: "venice-canal",
-        name: "Grand Canal, Venice",
-        country: "Italy",
-        emoji: "🛶",
-        category: "cities",
-        lat: 45.4371,
-        lon: 12.3326,
-        texture: "assets/beach.jpg",
-        desc: "Major water-traffic corridor through Venice lined with historical Venetian Gothic palaces.",
-        wiki: "https://en.wikipedia.org/wiki/Grand_Canal_(Venice)"
-      },
-      {
-        id: "santorini",
-        name: "Santorini Caldera",
-        country: "Greece",
-        emoji: "🇬🇷",
-        category: "cities",
-        lat: 36.3932,
-        lon: 25.4615,
-        texture: "assets/beach.jpg",
-        desc: "Dramatic Aegean cliffs topped with whitewashed, blue-domed cliffside villages.",
-        wiki: "https://en.wikipedia.org/wiki/Santorini"
-      },
-      {
-        id: "seoul-namsan",
-        name: "Namsan & Seoul",
-        country: "South Korea",
-        emoji: "🗼",
-        category: "cities",
-        lat: 37.5512,
-        lon: 126.9882,
-        texture: "assets/city.jpg",
-        desc: "Modern Korean tech capital panorama from Namsan mountain overlooking the Han River.",
-        wiki: "https://en.wikipedia.org/wiki/N_Seoul_Tower"
-      },
-      {
-        id: "amsterdam-canals",
-        name: "Amsterdam Canals",
-        country: "Netherlands",
-        emoji: "🚲",
-        category: "cities",
-        lat: 52.3676,
-        lon: 4.9041,
-        texture: "assets/city.jpg",
-        desc: "Historic 17th-century canal ring network lined with narrow brick merchant houses.",
-        wiki: "https://en.wikipedia.org/wiki/Canals_of_Amsterdam"
-      },
-
-      // --- NATURAL WONDERS & MOUNTAINS (10) ---
-      {
-        id: "everest-base",
-        name: "Mount Everest",
-        country: "Nepal",
-        emoji: "🏔️",
-        category: "nature",
-        lat: 27.9881,
-        lon: 86.9250,
-        texture: "assets/nature.jpg",
-        desc: "Earth's highest mountain peak above sea level (8,848.86 m), towering in the Himalayas.",
-        wiki: "https://en.wikipedia.org/wiki/Mount_Everest"
       },
       {
         id: "grand-canyon",
         name: "Grand Canyon",
-        country: "USA",
+        country: "Arizona, USA",
         emoji: "🏜️",
-        category: "nature",
+        resolution: "4K Panoramic 360°",
         lat: 36.1069,
         lon: -112.1129,
-        texture: "assets/nature.jpg",
-        desc: "Steep-sided canyon carved over millions of years by the Colorado River in Arizona.",
+        texture: "assets/grand_canyon.jpg",
+        desc: "A mile-deep gorge carved over millions of years by the Colorado River, exposing two billion years of Earth's geological history.",
         wiki: "https://en.wikipedia.org/wiki/Grand_Canyon"
       },
       {
         id: "mount-fuji",
         name: "Mount Fuji",
-        country: "Japan",
+        country: "Honshu, Japan",
         emoji: "🗻",
-        category: "nature",
+        resolution: "4K Panoramic 360°",
         lat: 35.3606,
         lon: 138.7274,
-        texture: "assets/nature.jpg",
-        desc: "Sacred active stratovolcano and Japan's highest peak, renowned for its symmetrical snow cone.",
+        texture: "assets/fuji.jpg",
+        desc: "Sacred active stratovolcano and Japan's highest peak at 3,776 meters, celebrated for its exceptionally symmetrical snow-capped cone.",
         wiki: "https://en.wikipedia.org/wiki/Mount_Fuji"
       },
       {
-        id: "victoria-falls",
-        name: "Victoria Falls",
-        country: "Zambia/Zimbabwe",
-        emoji: "🌊",
-        category: "nature",
-        lat: -17.9243,
-        lon: 25.8572,
-        texture: "assets/beach.jpg",
-        desc: "The world's greatest sheet of falling water on the Zambezi River, known as 'The Smoke That Thunders'.",
-        wiki: "https://en.wikipedia.org/wiki/Victoria_Falls"
+        id: "tokyo-metropolis",
+        name: "Tokyo Metropolis",
+        country: "Tokyo, Japan",
+        emoji: "🏙️",
+        resolution: "4K Equirectangular",
+        lat: 35.6595,
+        lon: 139.7005,
+        texture: "assets/city.jpg",
+        desc: "Vibrant high-tech skyline of the world's most populous metropolitan area, glowing with neon lights across Shibuya and Shinjuku.",
+        wiki: "https://en.wikipedia.org/wiki/Tokyo"
       },
       {
-        id: "iguazu-falls",
-        name: "Iguazu Falls",
-        country: "Brazil/Argentina",
-        emoji: "💦",
-        category: "nature",
-        lat: -25.6953,
-        lon: -54.4367,
-        texture: "assets/nature.jpg",
-        desc: "Spectacular chain of hundreds of cascading waterfalls on the border between Brazil and Argentina.",
-        wiki: "https://en.wikipedia.org/wiki/Iguazu_Falls"
+        id: "venice-canal",
+        name: "Grand Canal, Venice",
+        country: "Venice, Italy",
+        emoji: "🛶",
+        resolution: "4K Panoramic 360°",
+        lat: 45.4371,
+        lon: 12.3326,
+        texture: "assets/venice.jpg",
+        desc: "The historic water corridor sweeping through Venice in a reverse S-shape, spanned by the Rialto Bridge and lined with Gothic palaces.",
+        wiki: "https://en.wikipedia.org/wiki/Grand_Canal_(Venice)"
       },
       {
-        id: "northern-lights",
-        name: "Northern Lights, Tromsø",
-        country: "Norway",
-        emoji: "🌌",
-        category: "nature",
-        lat: 69.6492,
-        lon: 18.9553,
-        texture: "assets/metaverse.jpg",
-        desc: "Vibrant auroral ribbons dancing across the dark Arctic night skies in northern Scandinavia.",
-        wiki: "https://en.wikipedia.org/wiki/Aurora"
-      },
-      {
-        id: "matterhorn",
-        name: "The Matterhorn",
-        country: "Switzerland",
-        emoji: "🏔️",
-        category: "nature",
-        lat: 45.9763,
-        lon: 7.6586,
-        texture: "assets/nature.jpg",
-        desc: "Near-symmetrical pyramid mountain peak in the Pennine Alps overlooking Zermatt.",
-        wiki: "https://en.wikipedia.org/wiki/Matterhorn"
-      },
-      {
-        id: "great-barrier-reef",
-        name: "Great Barrier Reef",
-        country: "Australia",
-        emoji: "🐠",
-        category: "nature",
-        lat: -18.2871,
-        lon: 147.6992,
-        texture: "assets/beach.jpg",
-        desc: "The world's largest coral reef ecosystem, visible from outer space in the Coral Sea.",
-        wiki: "https://en.wikipedia.org/wiki/Great_Barrier_Reef"
-      },
-      {
-        id: "ha-long-bay",
-        name: "Ha Long Bay",
-        country: "Vietnam",
-        emoji: "🐉",
-        category: "nature",
-        lat: 20.9101,
-        lon: 107.1839,
-        texture: "assets/beach.jpg",
-        desc: "Emerald waters dotted with thousands of towering limestone karst islands topped by rainforests.",
-        wiki: "https://en.wikipedia.org/wiki/H%E1%BA%A1_Long_Bay"
-      },
-      {
-        id: "yosemite-valley",
-        name: "Yosemite Valley",
-        country: "USA",
-        emoji: "🌲",
-        category: "nature",
-        lat: 37.7456,
-        lon: -119.5936,
-        texture: "assets/nature.jpg",
-        desc: "Glacial valley in California's Sierra Nevada famed for giant granite cliffs like El Capitan.",
-        wiki: "https://en.wikipedia.org/wiki/Yosemite_Valley"
-      },
-
-      // --- TROPICAL BEACHES & COASTS (7) ---
-      {
-        id: "bora-bora",
-        name: "Bora Bora Lagoon",
-        country: "French Polynesia",
+        id: "tropical-beach",
+        name: "Tropical Ocean & Beach",
+        country: "Pacific Coast",
         emoji: "🏝️",
-        category: "beaches",
-        lat: -16.5004,
-        lon: -151.7415,
-        texture: "assets/beach.jpg",
-        desc: "Crystal-clear turquoise lagoon surrounded by a barrier reef and overwater bungalows.",
-        wiki: "https://en.wikipedia.org/wiki/Bora_Bora"
-      },
-      {
-        id: "maya-bay",
-        name: "Maya Bay, Phi Phi",
-        country: "Thailand",
-        emoji: "🏖️",
-        category: "beaches",
-        lat: 7.6775,
-        lon: 98.7669,
-        texture: "assets/beach.jpg",
-        desc: "Stunning sheltered cove surrounded by 100-meter towering limestone cliffs in the Andaman Sea.",
-        wiki: "https://en.wikipedia.org/wiki/Ko_Phi_Phi_Le"
-      },
-      {
-        id: "copacabana",
-        name: "Copacabana Beach",
-        country: "Brazil",
-        emoji: "⚽",
-        category: "beaches",
-        lat: -22.9711,
-        lon: -43.1825,
-        texture: "assets/beach.jpg",
-        desc: "Famous 4 km crescent-shaped golden sand beach in Rio de Janeiro with its mosaic wave promenade.",
-        wiki: "https://en.wikipedia.org/wiki/Copacabana,_Rio_de_Janeiro"
-      },
-      {
-        id: "bondi-beach",
-        name: "Bondi Beach",
-        country: "Australia",
-        emoji: "🏄",
-        category: "beaches",
-        lat: -33.8915,
-        lon: 151.2767,
-        texture: "assets/beach.jpg",
-        desc: "Legendary Australian surf beach with white sands and cliffside ocean pools.",
-        wiki: "https://en.wikipedia.org/wiki/Bondi_Beach"
-      },
-      {
-        id: "waikiki",
-        name: "Waikiki Beach, Hawaii",
-        country: "USA",
-        emoji: "🌺",
-        category: "beaches",
-        lat: 21.2766,
-        lon: -157.8282,
-        texture: "assets/beach.jpg",
-        desc: "World-famous beach on Oahu's south shore with views of Diamond Head crater volcano.",
-        wiki: "https://en.wikipedia.org/wiki/Waikiki"
-      },
-      {
-        id: "sechelt-inlet",
-        name: "Sechelt Inlet Coast",
-        country: "Canada",
-        emoji: "🌲",
-        category: "beaches",
+        resolution: "4K Equirectangular",
         lat: 49.4742,
         lon: -123.7544,
         texture: "assets/beach.jpg",
-        desc: "Pristine fjord waters framed by evergreen Pacific temperate rainforests in British Columbia.",
-        wiki: "https://en.wikipedia.org/wiki/Sechelt_Inlet"
+        desc: "Pristine coastal ocean waters, tranquil waves, and golden sands under a bright blue Pacific sky.",
+        wiki: "https://en.wikipedia.org/wiki/Beach"
       },
       {
-        id: "amalfi-coast",
-        name: "Amalfi Coast, Positano",
-        country: "Italy",
-        emoji: "🍋",
-        category: "beaches",
-        lat: 40.6281,
-        lon: 14.4850,
-        texture: "assets/beach.jpg",
-        desc: "Picturesque vertical town cascading down steep pastel cliffs into the Tyrrhenian Sea.",
-        wiki: "https://en.wikipedia.org/wiki/Amalfi_Coast"
-      },
-
-      // --- SACRED TEMPLES & HISTORIC SITES (7) ---
-      {
-        id: "angkor-wat",
-        name: "Angkor Wat",
-        country: "Cambodia",
-        emoji: "🛕",
-        category: "temples",
-        lat: 13.4125,
-        lon: 103.8670,
-        texture: "assets/nature.jpg",
-        desc: "Enormous 12th-century temple complex and the largest religious monument in the world.",
-        wiki: "https://en.wikipedia.org/wiki/Angkor_Wat"
-      },
-      {
-        id: "fushimi-inari",
-        name: "Fushimi Inari Taisha",
-        country: "Japan",
-        emoji: "⛩️",
-        category: "temples",
-        lat: 34.9671,
-        lon: 135.7727,
-        texture: "assets/nature.jpg",
-        desc: "Important Shinto shrine in Kyoto famous for thousands of vermilion torii gates winding up the sacred mountain.",
-        wiki: "https://en.wikipedia.org/wiki/Fushimi_Inari-taisha"
-      },
-      {
-        id: "borobudur",
-        name: "Borobudur Temple",
-        country: "Indonesia",
-        emoji: "🧘",
-        category: "temples",
-        lat: -7.6079,
-        lon: 110.2038,
-        texture: "assets/nature.jpg",
-        desc: "The world's largest Buddhist temple, decorated with 504 Buddha statues in Central Java.",
-        wiki: "https://en.wikipedia.org/wiki/Borobudur"
-      },
-      {
-        id: "varanasi-ghats",
-        name: "Varanasi Ghats, Ganges",
-        country: "India",
-        emoji: "🕉️",
-        category: "temples",
-        lat: 25.3056,
-        lon: 83.0104,
-        texture: "assets/taj.jpg",
-        desc: "Ancient stone riverfront steps leading down to the sacred Ganges, one of the world's oldest continually inhabited cities.",
-        wiki: "https://en.wikipedia.org/wiki/Ghats_in_Varanasi"
-      },
-      {
-        id: "golden-temple",
-        name: "Golden Temple, Amritsar",
-        country: "India",
-        emoji: "✨",
-        category: "temples",
-        lat: 31.6200,
-        lon: 74.8765,
-        texture: "assets/taj.jpg",
-        desc: "Sri Harmandir Sahib, the preeminent spiritual site of Sikhism, gilded with pure gold leaf over the sacred pool.",
-        wiki: "https://en.wikipedia.org/wiki/Golden_Temple"
-      },
-      {
-        id: "stonehenge",
-        name: "Stonehenge",
-        country: "UK",
-        emoji: "🪨",
-        category: "temples",
-        lat: 51.1789,
-        lon: -1.8262,
-        texture: "assets/nature.jpg",
-        desc: "Prehistoric megalithic monument erected between 3000 BC and 2000 BC in Wiltshire.",
-        wiki: "https://en.wikipedia.org/wiki/Stonehenge"
-      },
-      {
-        id: "bagan-pagodas",
-        name: "Bagan Ancient Pagodas",
-        country: "Myanmar",
-        emoji: "🛕",
-        category: "temples",
-        lat: 21.1717,
-        lon: 94.8585,
-        texture: "assets/nature.jpg",
-        desc: "Ancient royal capital valley blanketed by over 2,200 Buddhist temples and stupas.",
-        wiki: "https://en.wikipedia.org/wiki/Bagan"
-      },
-
-      // --- PLANETARY & SCI-FI REALMS (5) ---
-      {
-        id: "mars-perseverance",
+        id: "perseverance-mars",
         name: "Perseverance Rover, Mars",
         country: "Jezero Crater, Mars",
         emoji: "🪐",
-        category: "cosmic",
+        resolution: "NASA High-Res 360°",
         lat: 18.3800,
         lon: 77.5800,
         texture: "assets/mars.jpg",
-        desc: "Surface panoramic photography captured directly by NASA's Perseverance Mars Rover in Jezero Crater.",
+        desc: "High-resolution panoramic photography captured directly on the red planet by NASA's Perseverance Mars Rover in Jezero Crater.",
         wiki: "https://en.wikipedia.org/wiki/Perseverance_(rover)"
-      },
-      {
-        id: "apollo-moon",
-        name: "Apollo 11 Tranquility Base",
-        country: "The Moon",
-        emoji: "🌕",
-        category: "cosmic",
-        lat: 0.6740,
-        lon: 23.4720,
-        texture: "assets/mars.jpg",
-        desc: "The landing site on the lunar Sea of Tranquility where humans first set foot on another celestial world in 1969.",
-        wiki: "https://en.wikipedia.org/wiki/Tranquility_Base"
-      },
-      {
-        id: "iss-cupola",
-        name: "ISS Orbital Cupola",
-        country: "Low Earth Orbit (400km)",
-        emoji: "🛰️",
-        category: "cosmic",
-        lat: 0.0000,
-        lon: 0.0000,
-        texture: "assets/metaverse.jpg",
-        desc: "Seven-window observatory module on the International Space Station looking down at Earth's curvature.",
-        wiki: "https://en.wikipedia.org/wiki/Cupola_(ISS_module)"
-      },
-      {
-        id: "metaverse-realm",
-        name: "Metaverse Cyber Horizon",
-        country: "Virtual Spatial Dimension",
-        emoji: "🔮",
-        category: "cosmic",
-        lat: 0.0000,
-        lon: 0.0000,
-        texture: "assets/metaverse.jpg",
-        desc: "Abstract geometric poly-dimensional cyberspace reality designed for high-performance WebXR immersion.",
-        wiki: "https://en.wikipedia.org/wiki/Metaverse"
-      },
-      {
-        id: "aurora-sphere",
-        name: "Cosmic Aurora Borealis",
-        country: "Arctic Ionosphere",
-        emoji: "🌠",
-        category: "cosmic",
-        lat: 70.0000,
-        lon: 25.0000,
-        texture: "assets/metaverse.jpg",
-        desc: "Geomagnetic particle collisions creating brilliant green and violet curtains across the high-latitude atmosphere.",
-        wiki: "https://en.wikipedia.org/wiki/Aurora"
       }
     ];
 
     // =========================================================================
-    // 2. WEB AUDIO SPATIAL SYNTHESIZER
+    // 2. PROCEDURAL SPATIAL AUDIO SYNTHESIZER
     // =========================================================================
     const SpatialAudio = {
       ctx: null,
@@ -1388,29 +671,25 @@
         this.osc2.start();
       },
 
-      setAtmosphere(category) {
+      setAtmosphere(id) {
         if (!this.ctx || !this.active) return;
         const now = this.ctx.currentTime;
-        switch (category) {
-          case 'cosmic':
-            this.osc1.frequency.exponentialRampToValueAtTime(55, now + 1);
-            this.osc2.frequency.exponentialRampToValueAtTime(82.4, now + 1);
-            this.filter.frequency.exponentialRampToValueAtTime(320, now + 1);
-            break;
-          case 'beaches':
-            this.osc1.frequency.exponentialRampToValueAtTime(130.8, now + 1);
-            this.osc2.frequency.exponentialRampToValueAtTime(196, now + 1);
-            this.filter.frequency.exponentialRampToValueAtTime(550, now + 1);
-            break;
-          case 'cities':
-            this.osc1.frequency.exponentialRampToValueAtTime(98, now + 1);
-            this.osc2.frequency.exponentialRampToValueAtTime(147, now + 1);
-            this.filter.frequency.exponentialRampToValueAtTime(400, now + 1);
-            break;
-          default:
-            this.osc1.frequency.exponentialRampToValueAtTime(110, now + 1);
-            this.osc2.frequency.exponentialRampToValueAtTime(165, now + 1);
-            this.filter.frequency.exponentialRampToValueAtTime(450, now + 1);
+        if (id.includes('mars')) {
+          this.osc1.frequency.exponentialRampToValueAtTime(55, now + 1);
+          this.osc2.frequency.exponentialRampToValueAtTime(82.4, now + 1);
+          this.filter.frequency.exponentialRampToValueAtTime(300, now + 1);
+        } else if (id.includes('beach') || id.includes('venice')) {
+          this.osc1.frequency.exponentialRampToValueAtTime(130.8, now + 1);
+          this.osc2.frequency.exponentialRampToValueAtTime(196, now + 1);
+          this.filter.frequency.exponentialRampToValueAtTime(550, now + 1);
+        } else if (id.includes('tokyo') || id.includes('eiffel')) {
+          this.osc1.frequency.exponentialRampToValueAtTime(98, now + 1);
+          this.osc2.frequency.exponentialRampToValueAtTime(147, now + 1);
+          this.filter.frequency.exponentialRampToValueAtTime(400, now + 1);
+        } else {
+          this.osc1.frequency.exponentialRampToValueAtTime(110, now + 1);
+          this.osc2.frequency.exponentialRampToValueAtTime(165, now + 1);
+          this.filter.frequency.exponentialRampToValueAtTime(450, now + 1);
         }
       },
 
@@ -1448,16 +727,15 @@
     }
 
     // =========================================================================
-    // 3. UI RENDERING & PLACES INITIALIZATION
+    // 3. UI RENDERING
     // =========================================================================
-    let currentPlace = PLACES[0];
-    let currentFilter = 'all';
+    let currentPlace = TOP_10_PLACES[0];
 
-    function initPlacesGrid(list) {
+    function initPlacesGrid() {
       const grid = document.getElementById('places-grid');
       grid.innerHTML = '';
 
-      list.forEach(p => {
+      TOP_10_PLACES.forEach(p => {
         const card = document.createElement('div');
         card.className = `grid-place-card ${p.id === currentPlace.id ? 'active' : ''}`;
         card.id = `card-${p.id}`;
@@ -1472,17 +750,6 @@
         `;
         grid.appendChild(card);
       });
-
-      document.getElementById('place-count-indicator').innerText = `${list.length} Listed`;
-    }
-
-    function filterCategory(cat, btnElement) {
-      currentFilter = cat;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      if (btnElement) btnElement.classList.add('active');
-
-      const filtered = (cat === 'all') ? PLACES : PLACES.filter(p => p.category === cat);
-      initPlacesGrid(filtered);
     }
 
     // =========================================================================
@@ -1510,7 +777,7 @@
         if (activeCard) activeCard.classList.add('active');
 
         // 5. Update Ambient Sound
-        SpatialAudio.setAtmosphere(place.category);
+        SpatialAudio.setAtmosphere(place.id);
 
         // 6. Smooth Fade-in
         setTimeout(() => {
@@ -1522,12 +789,12 @@
 
     function updateHudCard(place) {
       document.getElementById('disp-title').innerHTML = `<span>${place.emoji}</span> ${place.name}, ${place.country}`;
-      document.getElementById('disp-category').innerText = place.category.toUpperCase();
+      document.getElementById('disp-res').innerText = place.resolution || "Ultra HD 360°";
 
       const latDir = place.lat >= 0 ? 'N' : 'S';
       const lonDir = place.lon >= 0 ? 'E' : 'W';
       document.getElementById('disp-coords').innerText = `Lat: ${Math.abs(place.lat).toFixed(4)}° ${latDir}, Lon: ${Math.abs(place.lon).toFixed(4)}° ${lonDir}`;
-      document.getElementById('disp-desc').innerText = place.desc || "Interactive 360-degree panoramic VR spatial environment.";
+      document.getElementById('disp-desc').innerText = place.desc;
 
       document.getElementById('streetview-btn').href = `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${place.lat},${place.lon}`;
       document.getElementById('earth-btn').href = `https://earth.google.com/web/search/${place.lat},${place.lon}`;
@@ -1535,162 +802,12 @@
     }
 
     function teleportRandom() {
-      const rand = PLACES[Math.floor(Math.random() * PLACES.length)];
+      const rand = TOP_10_PLACES[Math.floor(Math.random() * TOP_10_PLACES.length)];
       teleportTo(rand);
     }
 
     // =========================================================================
-    // 5. LIVE SEARCH & GLOBAL GEOCODING (NOMINATIM & COORDINATES)
-    // =========================================================================
-    const searchDropdown = document.getElementById('search-dropdown');
-
-    function handleSearchInput(query) {
-      const q = query.trim().toLowerCase();
-      if (!q) {
-        searchDropdown.style.display = 'none';
-        return;
-      }
-
-      // Filter from our 55 destinations
-      const matches = PLACES.filter(p => 
-        p.name.toLowerCase().includes(q) || 
-        p.country.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q)
-      ).slice(0, 6);
-
-      if (matches.length > 0) {
-        searchDropdown.innerHTML = matches.map(p => `
-          <div class="search-item" onclick="selectSearchPlace('${p.id}')">
-            <span>${p.emoji} <strong>${p.name}</strong> (${p.country})</span>
-            <span style="font-size:10px; color:#38bdf8;">${p.category}</span>
-          </div>
-        `).join('');
-        searchDropdown.style.display = 'block';
-      } else {
-        searchDropdown.innerHTML = `
-          <div class="search-item" onclick="executeSearch()">
-            <span>🔍 Search world map for <strong>"${query}"</strong>...</span>
-          </div>
-        `;
-        searchDropdown.style.display = 'block';
-      }
-    }
-
-    function selectSearchPlace(placeId) {
-      const place = PLACES.find(p => p.id === placeId);
-      if (place) {
-        document.getElementById('location-search-input').value = place.name;
-        searchDropdown.style.display = 'none';
-        teleportTo(place);
-      }
-    }
-
-    const COORD_REGEX = /^\s*([+-]?\d+(?:\.\d+)?)[,\s]+([+-]?\d+(?:\.\d+)?)\s*$/;
-
-    async function executeSearch() {
-      searchDropdown.style.display = 'none';
-      const input = document.getElementById('location-search-input').value.trim();
-      if (!input) return;
-
-      // Check if coordinates
-      const coordMatch = input.match(COORD_REGEX);
-      if (coordMatch) {
-        const lat = parseFloat(coordMatch[1]);
-        const lon = parseFloat(coordMatch[2]);
-        await handleCustomCoordinates(lat, lon);
-        return;
-      }
-
-      // Check local places match first
-      const localMatch = PLACES.find(p => p.name.toLowerCase().includes(input.toLowerCase()));
-      if (localMatch) {
-        teleportTo(localMatch);
-        return;
-      }
-
-      // Geocode via OpenStreetMap Nominatim
-      showToast(`Locating "${input}" across globe... 🛰️`);
-      try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input)}&format=json&limit=1`, {
-          headers: { 'User-Agent': 'EntropyVRApp/2.0' }
-        });
-        const data = await res.json();
-
-        if (data && data.length > 0) {
-          const item = data[0];
-          const lat = parseFloat(item.lat);
-          const lon = parseFloat(item.lon);
-          const name = item.display_name.split(',').slice(0, 3).join(',');
-
-          const customPlace = {
-            id: `custom-${Date.now()}`,
-            name: name,
-            country: item.display_name.split(',').slice(-1)[0].trim(),
-            emoji: "📍",
-            category: "custom",
-            lat: lat,
-            lon: lon,
-            texture: getSmartFallbackTexture(name),
-            desc: `Custom geocoded location. Coordinates: ${lat.toFixed(4)}, ${lon.toFixed(4)}.`,
-            wiki: `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(input)}`
-          };
-
-          teleportTo(customPlace);
-        } else {
-          alert(`Location "${input}" not found on map. Try another city or enter GPS coordinates!`);
-        }
-      } catch (e) {
-        console.warn("Geocoding failed:", e);
-        showToast("Geocoding service unavailable. Selected nearest wonder!");
-        teleportRandom();
-      }
-    }
-
-    async function handleCustomCoordinates(lat, lon) {
-      showToast(`Reverse-geocoding (${lat.toFixed(3)}, ${lon.toFixed(3)})... 🛰️`);
-      let placeName = `Coordinates (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
-      let country = "Custom GPS";
-
-      try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`, {
-          headers: { 'User-Agent': 'EntropyVRApp/2.0' }
-        });
-        const data = await res.json();
-        if (data && data.display_name) {
-          placeName = data.display_name.split(',').slice(0, 3).join(',');
-          country = data.display_name.split(',').slice(-1)[0].trim();
-        }
-      } catch (e) {
-        console.warn("Reverse geocode failed:", e);
-      }
-
-      const customPlace = {
-        id: `coords-${Date.now()}`,
-        name: placeName,
-        country: country,
-        emoji: "🌐",
-        category: "coords",
-        lat: lat,
-        lon: lon,
-        texture: "assets/city.jpg",
-        desc: `GPS Target Teleport. Latitude: ${lat.toFixed(4)}, Longitude: ${lon.toFixed(4)}. Open Street View below for 360 panoramic inspection.`,
-        wiki: `https://earth.google.com/web/search/${lat},${lon}`
-      };
-
-      teleportTo(customPlace);
-    }
-
-    function getSmartFallbackTexture(name) {
-      const lower = name.toLowerCase();
-      if (lower.includes('beach') || lower.includes('island') || lower.includes('sea') || lower.includes('ocean')) return 'assets/beach.jpg';
-      if (lower.includes('mountain') || lower.includes('alps') || lower.includes('valley') || lower.includes('forest')) return 'assets/nature.jpg';
-      if (lower.includes('palace') || lower.includes('castle') || lower.includes('museum')) return 'assets/palace.jpg';
-      if (lower.includes('mars') || lower.includes('space') || lower.includes('moon')) return 'assets/mars.jpg';
-      return 'assets/city.jpg';
-    }
-
-    // =========================================================================
-    // 6. MULTI-FORMAT FILE UPLOADER
+    // 5. MULTI-FORMAT FILE UPLOADER
     // =========================================================================
     function handleFileUpload(event) {
       const file = event.target.files[0];
@@ -1705,7 +822,7 @@
             name: file.name.replace(/\.[^/.]+$/, ""),
             country: "User Uploaded 360°",
             emoji: "📸",
-            category: "custom",
+            resolution: "Custom User Image",
             lat: 0.0,
             lon: 0.0,
             texture: e.target.result,
@@ -1716,7 +833,6 @@
         };
         reader.readAsDataURL(file);
       } else {
-        // Text / CSV / GPX
         showToast(`Parsing location data from ${file.name}...`);
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -1725,16 +841,21 @@
           if (match) {
             const lat = parseFloat(match[1]);
             const lon = parseFloat(match[2]);
-            document.getElementById('location-search-input').value = `${lat}, ${lon}`;
-            handleCustomCoordinates(lat, lon);
+            const customPlace = {
+              id: `coords-${Date.now()}`,
+              name: `GPS Point (${lat.toFixed(2)}, ${lon.toFixed(2)})`,
+              country: "Custom Coordinates",
+              emoji: "🌐",
+              resolution: "GPS Ground View",
+              lat: lat,
+              lon: lon,
+              texture: "assets/city.jpg",
+              desc: `Teleported to GPS coordinates (${lat.toFixed(4)}, ${lon.toFixed(4)}). Open Google Street View below for ground imagery!`,
+              wiki: `https://earth.google.com/web/search/${lat},${lon}`
+            };
+            teleportTo(customPlace);
           } else {
-            const firstLine = content.split(/\r?\n/)[0].trim();
-            if (firstLine) {
-              document.getElementById('location-search-input').value = firstLine;
-              executeSearch();
-            } else {
-              alert("Could not extract coordinates or location names from uploaded file.");
-            }
+            alert("Could not extract coordinates from uploaded file.");
           }
         };
         reader.readAsText(file);
@@ -1742,7 +863,7 @@
     }
 
     // =========================================================================
-    // 7. COMPASS & SPATIAL TRACKING
+    // 6. COMPASS & SPATIAL TRACKING
     // =========================================================================
     const compassBadge = document.getElementById('compass-badge');
     const cameraEl = document.getElementById('camera');
@@ -1765,7 +886,7 @@
     requestAnimationFrame(updateCompass);
 
     // =========================================================================
-    // 8. UTILITIES (TOAST, HUD TOGGLE, FULLSCREEN)
+    // 7. UTILITIES
     // =========================================================================
     let toastTimeout;
     function showToast(msg) {
@@ -1804,16 +925,9 @@
       }
     }
 
-    // Close dropdown on click outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-section')) {
-        searchDropdown.style.display = 'none';
-      }
-    });
-
-    // Boot App
-    initPlacesGrid(PLACES);
-    updateHudCard(PLACES[0]);
+    // Initialize App
+    initPlacesGrid();
+    updateHudCard(TOP_10_PLACES[0]);
   </script>
 </body>
 </html>
